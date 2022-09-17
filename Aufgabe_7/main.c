@@ -1,51 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h> 
+#include <ctype.h>
 #include <unistd.h>
+#include <funktionsgenerator.h>
+
+int option;
+char *datei;
+int frequenz = 0;
+int amplitude = 0;
+int perioden = 0;
+char *datei;
 
 
 int main(int argc,char *argv[])
 {
-	char *vvalue = NULL;
-	int option;
-	opterr = 0;
-	
+    while((option = getopt(argc, argv, "h v d: a: f: p:")) != -1)
+    {
+        switch(option)
+        {
+        case 'h':
+            printf("Der Funktionsgenerator erzeugt Wertepaare einer Rechteckfunktion und gibt diese in eine Datei aus.\n");
+            printf("Dazu müssen folgende Kommandozeilenparameter übergeben werden:\n");
+            printf("-d /Pfad/zur/Datei/Dateiname\n");
+            printf("-a (Amplitude in V)");
+            printf("-f (Frequenz in Hz)\n");
+            printf("-p (Anzahl der Perioden bzw. Rechteckssignale)\n");
+            printf("-v (Verison und Author)\n"); 
+            printf("-h (Für diese Hilfe)\n");
+            break;
+        case 'v':
+            printf("Version 0.1\n");
+            printf("Autor: Roman Rückert\n");
+        case 'd':
+            datei = optarg;
+            break;
+        case 'a':
+            amplitude=atoi(optarg);
+            printf("Amplitude: %d V \n", amplitude);
+            break;
+        case 'f':
+	    frequenz=atoi(optarg);
+            printf("Frequenz: %d Hz\n", frequenz);
+            break;
+        case 'p':
+            perioden=atoi(optarg);
+            printf("Anzahl der Perioden: %d \n", perioden);
+            break;
+        }
+    }
+    FILE *filepointer;
+    filepointer = fopen(datei, "w");
 
-	while ((option = getopt(argc, argv, "hd:f:")) != -1)
-	switch (option)
-      	{	
-		//minimal
-		case 'f':
-			printf("Hier das eingegebene Argument: %s\n", optarg);
-			break;
-      		case 'h':
-        		printf("-h for help \n-d [text] um Text auszugeben\n");
-        		break;
-      		case 'd':
-			vvalue = optarg;
-			printf("%s\n", vvalue);
-        	break;
-		//optional error handling
-      		case '?':
-        		if (optopt == 'd')
-			{
-        			fprintf (stderr, "There are rules! -%c requires an argument.\n", optopt);
-			}       	
-			else if (isprint (optopt))//is character printable
-			{        
-				fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-        		}
-			else
-			{
-        			fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-			}
-        		return 1;
-      		default:
-        	abort ();
-      }
+    if (filepointer == NULL)
+    {
+        printf("Fehler beim öffnen der Datei: '%s'\n", datei);
+        exit(-1);
+    }
 
-  
 
-  return 0;
 
+
+    if(fclose(filepointer) == EOF)
+    {
+        printf("Fehler beim schließen der Datei!\n");
+        exit(-1);
+    }
+    return 0;
 }
