@@ -57,8 +57,7 @@ int main(int argc,char *argv[])
         exit(-1);
     }
 
-
-
+    funktionsgenerator(amplitude,frequenz,perioden, filepointer);
 
     if(fclose(filepointer) == EOF)
     {
