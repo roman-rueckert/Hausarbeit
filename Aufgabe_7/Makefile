@@ -1,9 +1,8 @@
-all: staticlib
-  gcc-10 -o funktionsgenerator.elf main.c -lm
+application_static: staticlib 
+	gcc-10 main.c -l_funktionsgenerator -o funktionsgenerator.elf -lm
 
 staticlib:
-	gcc-10 -c funktionsgenerator.c
-	ar -crs static_lib_funktionsgenerator.a funktionsgenerator.o
+	gcc-10 funktionsgenerator.c -c
+	ar -crs funktionsgenerator.a funktionsgenerator.o
 	sudo cp funktionsgenerator.h /usr/include
-	sudo cp static_lib_funktionsgenerator.a /usr/lib
-
+	sudo cp funktionsgenerator.a /usr/lib
