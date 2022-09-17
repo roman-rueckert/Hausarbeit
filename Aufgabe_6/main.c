@@ -62,8 +62,6 @@ void merge(int array[], int l, int m, int r)
 
 void mergesort(int array[], int l, int r)
 {
-    printf("l: %d\n", l);
-    printf("r: %d\n", r);
     // Ende der Rekursion erreicht wenn l = r
     if (l < r)
     {
